@@ -86,7 +86,7 @@ spec:
     - name: architectures
       value: arm64
     - name: cleanup
-      value: "false"
+      value: "true"
     - name: os-buildconfig
       value: fedora-coreos
     - name: os-name

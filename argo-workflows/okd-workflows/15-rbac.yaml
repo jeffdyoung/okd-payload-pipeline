@@ -16,6 +16,7 @@ items:
           - build.openshift.io
         resources:
           - builds
+          - configmaps
         verbs:
           - get
           - create
