@@ -5,7 +5,7 @@ items:
     kind: ClusterRole
     metadata:
       name: build-manager
-      namespace: argo-workflows-build-example
+      namespace: okd-fcos
       annotations:
         description: |
           This role will allow the bound service account to manage builds and get buildconfigs.
@@ -42,7 +42,7 @@ items:
     kind: ClusterRole
     metadata:
       name: argo-workflows-controller
-      namespace: argo-workflows-build-example
+      namespace: okd-fcos
       annotations:
         description: |
           This role is needed to allow the output parameters handling and to set the finalizers of the workflows objects
@@ -70,7 +70,7 @@ items:
     kind: ClusterRoleBinding
     metadata:
       name: workflows-build-manager
-      namespace: argo-workflows-build-example
+      namespace: okd-fcos
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
@@ -78,12 +78,12 @@ items:
     subjects:
       - kind: ServiceAccount
         name: workflows
-        namespace: argo-workflows-build-example
+        namespace: okd-fcos
   - apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
       name: workflows-argo-workflows-exec
-      namespace: argo-workflows-build-example
+      namespace: okd-fcos
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
@@ -91,12 +91,12 @@ items:
     subjects:
       - kind: ServiceAccount
         name: workflows
-        namespace: argo-workflows-build-example
+        namespace: okd-fcos
   - apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
       name: argo-image-builder
-      namespace: argo-workflows-build-example
+      namespace: okd-fcos
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
@@ -104,4 +104,4 @@ items:
     subjects:
       - kind: ServiceAccount
         name: workflows
-        namespace: argo-workflows-build-example
+        namespace: okd-fcos

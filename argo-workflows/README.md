@@ -16,13 +16,6 @@ oc apply -k argo-workflows/operator-deployment
 ```shell
 oc apply -k variants/fcos-multiarch
 ```
-```shell
-oc apply -k argo-workflows/okd-workflows
-```
-
-```shell
-oc apply -k buildconfigs
-```
 If taints on the secondary architecture nodes are set, annotate the namespace to allow scheduling builds on those nodes
 
 ```shell
