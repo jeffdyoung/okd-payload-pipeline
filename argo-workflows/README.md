@@ -16,7 +16,13 @@ oc apply -k argo-workflows/operator-deployment
 ```shell
 oc apply -k variants/fcos-multiarch
 ```
+```shell
+oc apply -k argo-workflows/okd-workflows
+```
 
+```shell
+oc apply -k buildconfigs
+```
 If taints on the secondary architecture nodes are set, annotate the namespace to allow scheduling builds on those nodes
 
 ```shell
@@ -59,7 +65,7 @@ spec:
     - name: architectures
       value: amd64,arm64
     - name: cleanup
-      value: "true" # deletes any previously built images
+      value: "false" # deletes any previously built images
     - name: os-image
       value: quay.io/okd/centos-stream-coreos-9:4.12-x86_64
     - name: os-name
@@ -85,7 +91,7 @@ spec:
   arguments:
     parameters:
     - name: architectures
-      value: amd64,arm64
+      value: arm64
     - name: cleanup
       value: "false"
     - name: os-buildconfig
@@ -93,11 +99,11 @@ spec:
     - name: os-name
       value: fedora-coreos
     - name: release-image-location 
-      value: quay.io/<org>/okd-release-argo:4.13.0-0.okd-2204161150z
+      value: quay.io/jeffdyoung/release:armshift
     - name: release-mirror-location
-      value: quay.io/<org>/okd-release-argo
+      value: quay.io/jeffdyoung/release
     - name: registry-credentials-secret-ref
-      value: registry-robot-token
+      value: jeffdyoung-openshiftbuild-pull-secret
   workflowTemplateRef:
     name: build-okd
     clusterScope: true

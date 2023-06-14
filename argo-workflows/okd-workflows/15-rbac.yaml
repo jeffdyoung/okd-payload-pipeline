@@ -78,6 +78,7 @@ items:
     subjects:
       - kind: ServiceAccount
         name: workflows
+        namespace: argo-workflows-build-example
   - apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -90,6 +91,7 @@ items:
     subjects:
       - kind: ServiceAccount
         name: workflows
+        namespace: argo-workflows-build-example
   - apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -102,3 +104,4 @@ items:
     subjects:
       - kind: ServiceAccount
         name: workflows
+        namespace: argo-workflows-build-example
