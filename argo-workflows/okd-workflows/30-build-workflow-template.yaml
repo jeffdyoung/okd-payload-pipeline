@@ -145,13 +145,9 @@ spec:
           tar -C /tmp --transform 's/manifest-tool-linux-.*/mtl/' \
             -xvf /tmp/binaries-manifest-tool.tar.gz manifest-tool-linux-$(uname -m | sed 's/aarch64/arm64/;s/x86_64/amd64/')
           image='{{inputs.parameters.final-image}}'
-          echo "[INFO] 1 ${image}"
           image="${image%\",*}"
-          echo "[INFO] 2 ${image}"
           image="${image#\[\"}"
-          echo "[INFO] 3 ${image}"
           image="${image%\"\]}"
-          echo "[INFO] 4 ${image}"
           mapfile -t architectures < <(echo "{{inputs.parameters.architectures}}" | tr ',' '\n')
           echo "[INFO] Creating manifest list ${image} with manifests for architectures ${architectures[*]}"         
           MANIFEST_LIST="

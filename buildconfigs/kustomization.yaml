@@ -95,10 +95,10 @@ patches:
         path: "/spec/resources"
         value:
           limits:
-            cpu: "6"
+            cpu: "7"
           requests:
-            cpu: "6"
-            memory: 8Gi
+            cpu: "7"
+            memory: 14Gi
     target:
       kind: BuildConfig
       labelSelector: "resources-profile==high"
