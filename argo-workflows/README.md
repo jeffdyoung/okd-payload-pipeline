@@ -56,13 +56,19 @@ spec:
   arguments:
     parameters:
     - name: architectures
-      value: amd64,arm64
+      value: arm64
     - name: cleanup
-      value: "false" # deletes any previously built images
+      value: "true" # deletes any previously built images
     - name: os-image
       value: quay.io/okd/centos-stream-coreos-9:4.12-x86_64
     - name: os-name
       value: centos-stream-coreos-9
+    - name: release-image-location 
+      value: quay.io/jeffdyoung/release:armshift
+    - name: release-mirror-location
+      value: quay.io/jeffdyoung/release
+    - name: registry-credentials-secret-ref
+      value: registry-robot-token
   workflowTemplateRef:
     name: build-okd
     clusterScope: true

@@ -609,7 +609,8 @@ spec:
             name: package-release
             volumeMounts:
               - mountPath: /var/run/credentials
-                name: registry-robot-token
+                name: credentials
+                readOnly: false
       volumes:
         - name: credentials
           secret:
