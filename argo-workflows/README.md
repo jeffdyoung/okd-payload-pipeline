@@ -18,6 +18,11 @@ oc apply -k variants/fcos-multiarch
 ```
 If taints on the secondary architecture nodes are set, annotate the namespace to allow scheduling builds on those nodes
 
+Patch python image stream to pull entire manifest list.
+``` shell
+ oc patch is/python -n openshift -p '{"spec":{"tags":[{"name":"3.9-ubi9","importPolicy":{"importMode":"PreserveOriginal"}}]}}'
+```
+
 ```shell
 oc annotate namespace argo-workflows-build-example \
   'scheduler.alpha.kubernetes.io/defaultTolerations'='[{"operator": "Exists", "effect": "NoSchedule", "key": "arm64"}]'
@@ -58,7 +63,7 @@ spec:
     - name: architectures
       value: arm64
     - name: cleanup
-      value: "true" # deletes any previously built images
+      value: "false" # deletes any previously built images
     - name: os-image
       value: quay.io/okd/centos-stream-coreos-9:4.12-x86_64
     - name: os-name

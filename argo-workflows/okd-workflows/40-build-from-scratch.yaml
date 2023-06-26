@@ -592,9 +592,10 @@ spec:
               - |
                 #!/bin/bash
                 set -ex
-                oc registry login -a /var/run/credentials/.dockerconfigjson
+                cp /tmp/credentials/.dockerconfigjson /tmp/readwrite/.dockerconfigjson
+                oc registry login -a /tmp/readwrite/.dockerconfigjson
                 oc adm release new \
-                  --registry-config=/var/run/credentials/.dockerconfigjson \
+                  --registry-config=/tmp/readwrite/.dockerconfigjson \
                   --from-image-stream release \
                   --insecure=true \
                   --mirror {{inputs.parameters.release-mirror-location}} \
@@ -608,10 +609,15 @@ spec:
             image: image-registry.openshift-image-registry.svc:5000/openshift/cli
             name: package-release
             volumeMounts:
-              - mountPath: /var/run/credentials
+              - mountPath: /tmp/credentials
                 name: credentials
+                readOnly: false
+              - mountPath: /tmp/readwrite
+                name: readwrite
                 readOnly: false
       volumes:
         - name: credentials
           secret:
             secretName: '{{workflow.parameters.registry-credentials-secret-ref}}'
+        - emptyDir: {}
+          name: readwrite
