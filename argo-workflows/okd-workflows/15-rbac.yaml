@@ -28,6 +28,7 @@ items:
           - buildconfigs
         verbs:
           - get
+          - list
       - apiGroups:
           - "image.openshift.io"
         resources:
@@ -78,7 +79,7 @@ items:
     subjects:
       - kind: ServiceAccount
         name: workflows
-        namespace: okd-fcos
+        namespace: okd-414
   - apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -90,7 +91,7 @@ items:
     subjects:
       - kind: ServiceAccount
         name: workflows
-        namespace: okd-fcos
+        namespace: okd-414
   - apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -102,4 +103,4 @@ items:
     subjects:
       - kind: ServiceAccount
         name: workflows
-        namespace: okd-fcos
+        namespace: okd-414

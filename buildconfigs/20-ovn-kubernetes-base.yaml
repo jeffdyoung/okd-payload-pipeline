@@ -7,7 +7,7 @@ spec:
     type: Git
     git:
       uri: 'https://github.com/openshift/ovn-kubernetes'
-      ref: release-4.13
+      ref: release-4.14
     contextDir: .
     images: []
   strategy:
@@ -20,9 +20,9 @@ spec:
         name: "release:base"
       buildArgs:
         - name: ovsver
-          value: 3.1.0-17.el9s
+          value: 3.1.0-33.el9s
         - name: ovnver
-          value: 22.03.0-22.el9s
+          value: 23.03.0-50.el9s
   output:
     to:
       kind: ImageStreamTag

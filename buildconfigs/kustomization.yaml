@@ -7,14 +7,14 @@ patches:
   - patch: |-
       - op: replace
         path: "/spec/source/git/ref"
-        value: release-4.13
+        value: release-4.14
     target:
       kind: BuildConfig
       labelSelector: "skip-release-branch!=true"
   - patch: |-
       - op: replace
         path: "/spec/source/git/ref"
-        value: openshift-4.13
+        value: openshift-4.14
     target:
       kind: BuildConfig
       name: etcd
@@ -29,6 +29,10 @@ patches:
               kind: "ImageStreamTag"
               name: "release:builder"
            as:
+              - 'registry.ci.openshift.org/ocp/builder:rhel-9-golang-1.20-openshift-4.14'
+              - 'registry.ci.openshift.org/ocp/builder:rhel-8-golang-1.20-openshift-4.14'
+              - 'registry.ci.openshift.org/ocp/builder:rhel-9-golang-1.19-openshift-4.14'
+              - 'registry.ci.openshift.org/ocp/builder:rhel-8-golang-1.19-openshift-4.14'
               - 'registry.ci.openshift.org/ocp/builder:rhel-9-golang-1.20-openshift-4.13'
               - 'registry.ci.openshift.org/ocp/builder:rhel-8-golang-1.20-openshift-4.13'
               - 'registry.ci.openshift.org/ocp/builder:rhel-9-golang-1.19-openshift-4.13'
@@ -60,6 +64,7 @@ patches:
             - 'registry.ci.openshift.org/ocp/4.11:cli'
             - 'registry.ci.openshift.org/ocp/4.12:cli'
             - 'registry.ci.openshift.org/ocp/4.13:cli'
+            - 'registry.ci.openshift.org/ocp/4.14:cli'
     target:
       kind: BuildConfig
       labelSelector: "skip-replace-cli!=true"
@@ -95,10 +100,10 @@ patches:
         path: "/spec/resources"
         value:
           limits:
-            cpu: "7"
+            cpu: "6"
           requests:
-            cpu: "7"
-            memory: 14Gi
+            cpu: "6"
+            memory: 10Gi
     target:
       kind: BuildConfig
       labelSelector: "resources-profile==high"

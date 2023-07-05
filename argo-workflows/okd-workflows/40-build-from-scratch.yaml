@@ -122,7 +122,7 @@ spec:
               - cli
     - name: batches
       failFast: true
-      parallelism: 12
+      parallelism: 2
       steps:
         - - name: batch-01
             template: build-multiarch-workflow
@@ -163,7 +163,16 @@ spec:
             - cluster-authentication-operator
             - cluster-autoscaler-operator
             - cluster-autoscaler
-            #- cluster-baremetal-operator
+            # - cluster-baremetal-operator TODO: fix build failure: go run vendor/sigs.k8s.io/controller-tools/cmd/controller-gen/main.go "crd:trivialVersions=true,crdVersions=v1" rbac:roleName=cluster-baremetal-operator webhook paths=./... output:crd:artifacts:config=config/crd/bases
+# sed -i '/^    controller-gen.kubebuilder.io\/version: (devel)/d' config/crd/bases/*
+# go run vendor/sigs.k8s.io/controller-tools/cmd/controller-gen/main.go object:headerFile=./hack/boilerplate.go.txt paths="./..."
+# GOLANGCI_LINT_CACHE=/root/.cache/golangci-lint go run vendor/github.com/golangci/golangci-lint/cmd/golangci-lint/main.go run --fix
+# level=warning msg="[runner] The linter 'deadcode' is deprecated (since v1.49.0) due to: The owner seems to have abandoned the linter.  Replaced by unused."
+# level=warning msg="[runner] The linter 'varcheck' is deprecated (since v1.49.0) due to: The owner seems to have abandoned the linter.  Replaced by unused."
+# level=warning msg="[runner] The linter 'structcheck' is deprecated (since v1.49.0) due to: The owner seems to have abandoned the linter.  Replaced by unused."
+# signal: killed
+# make: *** [Makefile:114: generate] Error 1
+# error: build error: building at STEP "RUN make cluster-baremetal-operator": while running runtime: exit status 2
             - cluster-bootstrap
             - cluster-capi-controllers
             - cluster-capi-operator
@@ -221,7 +230,7 @@ spec:
             - gcp-pd-csi-driver-operator
             - gcp-pd-csi-driver
             - haproxy-router-base
-            - hypershift
+            # - hypershift # multiarch-build error: invalid cache key: hypershift-86af31a5a5cdee3da0d7f65f3bd550f4ec9cac55
             - ibm-cloud-controller-manager
             - ibm-vpc-block-csi-driver-operator
             - ibm-vpc-block-csi-driver
@@ -239,7 +248,7 @@ spec:
             - kube-storage-version-migrator
             - local-storage-static-provisioner
             - machine-api-operator
-            #- machine-config-operator
+            # - machine-config-operator #TODO fix arm and x86 build: Unable to find a match: nmstate-2.2.9-6.rhaos4.13.el8
             - machine-image-customization-controller
             - multus-admission-controller
             - multus-cni
@@ -290,11 +299,11 @@ spec:
             - vsphere-csi-driver
             - vsphere-problem-detector
             - cluster-node-tuning-operator
-            #- ironic
+            - ironic #TODO fix arm build
             - ironic-hardware-inventory-recorder
             - libvirt-machine-controllers
             - operator-registry
-            #- sdn
+            - sdn #TODO fix amd64 + arm64  build. Error: Unable to find a match: openvswitch2.13. fix here: https://github.com/openshift/sdn/pull/553
             - console
             - baremetal-installer
             - installer-artifacts
@@ -314,7 +323,7 @@ spec:
             - artifacts
             - tools
             - haproxy-router
-            # - ovn-kubernetes-base
+            - ovn-kubernetes-base 
             - machine-os-images
             - deployer
         - - name: batch-03
@@ -327,9 +336,9 @@ spec:
                   value: "{{workflow.parameters.architectures}}"
             withItems:
             - tests
-            #- network-tools
-            #- ovn-kubernetes-microshift
-            #- ovn-kubernetes
+            - network-tools 
+            - ovn-kubernetes-microshift 
+            - ovn-kubernetes
     - name: cleanup
       steps:
         - - name: delete-release-imagestream
@@ -405,48 +414,16 @@ spec:
                           name: registry.access.redhat.com/ubi9-minimal:9.0.0
                         referencePolicy:
                           type: Source
-                      - name: ironic
+                        importPolicy:
+                          importMode: PreserveOriginal
+                      - name: hypershift
                         from:
                           kind: DockerImage
                           name: registry.access.redhat.com/ubi9-minimal:9.0.0
                         referencePolicy:
                           type: Source
-                      - name: machine-config-operator
-                        from:
-                          kind: DockerImage
-                          name: registry.access.redhat.com/ubi9-minimal:9.0.0
-                        referencePolicy:
-                          type: Source
-                      - name: sdn
-                        from:
-                          kind: DockerImage
-                          name: registry.access.redhat.com/ubi9-minimal:9.0.0
-                        referencePolicy:
-                          type: Source
-                      - name: ovn-kubernetes-base
-                        from:
-                          kind: DockerImage
-                          name: registry.access.redhat.com/ubi9-minimal:9.0.0
-                        referencePolicy:
-                          type: Source
-                      - name: ovn-kubernetes
-                        from:
-                          kind: DockerImage
-                          name: registry.access.redhat.com/ubi9-minimal:9.0.0
-                        referencePolicy:
-                          type: Source
-                      - name: ovn-kubernetes-microshift
-                        from:
-                          kind: DockerImage
-                          name: registry.access.redhat.com/ubi9-minimal:9.0.0
-                        referencePolicy:
-                          type: Source
-                      - name: network-tools
-                        from:
-                          kind: DockerImage
-                          name: registry.access.redhat.com/ubi9-minimal:9.0.0
-                        referencePolicy:
-                          type: Source
+                        importPolicy:
+                          importMode: PreserveOriginal
     - name: recreate-os-imagestreamtags
       inputs:
         parameters:
@@ -582,7 +559,7 @@ spec:
     - name: package-release
       inputs:
         parameters:
-          - default: quay.io/<org>/okd-release-argo:4.13.0-0.okd-fcos-bfs
+          - default: quay.io/<org>/okd-release-argo:4.13.0-0.okd-414-bfs
             name: release-image-location
           - default: quay.io/<org>/okd-release-argo
             name: release-mirror-location
