@@ -10,8 +10,10 @@ spec:
         default: amd64
       - name: cleanup
         default: "true"
-      - name: components
+      - name: component
         default: ""
+      - name: rebuild-base
+        default: "true"
   templates:
     - name: entrypoint
       steps:
@@ -20,6 +22,7 @@ spec:
             template: cleanup
         - - name: initial
             template: initial
+            when: "{{workflow.parameters.rebuild-base}}==true"
         - - name: batches
             template: batches
     - name: build-multiarch-workflow
@@ -57,11 +60,9 @@ spec:
             arguments:
               parameters:
                 - name: build-config-name
-                  value: "{{item}}"
+                  value: "{{workflow.parameters.component}}"
                 - name: architectures
                   value: "{{workflow.parameters.architectures}}"
-            withItems:
-              - "{{workflow.parameters.components}}"
     - name: cleanup
       steps:
         - - name: delete-release-imagestream

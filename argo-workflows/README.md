@@ -66,7 +66,7 @@ spec:
     - name: cleanup
       value: "true" # deletes any previously built images
     - name: os-image
-      value: quay.io/okd/centos-stream-coreos-9:4.12-x86_64
+      value: quay.io/okd/centos-stream-coreos-9:4.14-x86_64
     - name: os-name
       value: centos-stream-coreos-9
     - name: release-image-location 
@@ -140,15 +140,13 @@ spec:
   arguments:
     parameters:
     - name: architectures
-      value: amd64,arm64
+      value: amd64
     - name: cleanup
-      value: "true"
+      value: "false"
     - name: rebuild-base
       value: "false"
-    - name: components 
-      value: 
-        - "baremetal-installer"
-        - "cli-artifacts"
+    - name: component
+      value: "ironic"
   workflowTemplateRef:
     name: build-okd-component
     clusterScope: true

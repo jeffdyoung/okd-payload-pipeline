@@ -122,7 +122,7 @@ spec:
               - cli
     - name: batches
       failFast: true
-      parallelism: 2
+      parallelism: 4
       steps:
         - - name: batch-01
             template: build-multiarch-workflow

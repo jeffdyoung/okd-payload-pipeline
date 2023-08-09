@@ -24,7 +24,7 @@ spec:
     type: Docker
     dockerStrategy:
       imageOptimizationPolicy: SkipLayers
-      dockerfilePath: Dockerfile.okd
+      dockerfilePath: Dockerfile.scos
       from:
         kind: "ImageStreamTag"
         name: "release:base"
